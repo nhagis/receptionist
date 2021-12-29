@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Box,
@@ -14,6 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { userLogin } from "../utils/mockApi";
 import ErrorMessage from "../components/ErrorMessage";
 function LoginForm() {
+  const [users, setUsers] = useState([]);
+  const getData = async () => {
+    const res = await axios.get("/api/users");
+    console.log("Response is:", res);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   let navigate = useNavigate();
   const [number, setNumber] = useState("");
   const [error, setError] = useState("");

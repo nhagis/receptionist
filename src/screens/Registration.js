@@ -7,13 +7,13 @@ import {
   FormLabel,
   Input,
   Button,
+  Stack,
+  CircularProgress,
 } from "@chakra-ui/core";
 import { useNavigate } from "react-router-dom";
 
 function Registration() {
   let navigate = useNavigate();
-  const [number, setNumber] = useState("");
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,6 +24,9 @@ function Registration() {
     } catch (error) {
       setIsLoading(false);
     }
+  };
+  const cancellation = () => {
+    navigate("/");
   };
   return (
     <Flex width="full" align="center" justifyContent="center">
@@ -66,7 +69,7 @@ function Registration() {
               <Input type="password" placeholder="24" />
             </FormControl>
 
-            <Flex align="center" justifyContent="center">
+            {/* <Flex align="center" justifyContent="center">
               <Button
                 type="submit"
                 variantColor="teal"
@@ -75,7 +78,30 @@ function Registration() {
               >
                 Register Now
               </Button>
-            </Flex>
+            </Flex> */}
+
+            <Stack direction="row" spacing={4} mt={8}>
+              <Button
+                type="submit"
+                variantColor="teal"
+                variant="solid"
+                border={0}
+              >
+                {isLoading ? (
+                  <CircularProgress isIndeterminate size="24px" color="teal" />
+                ) : (
+                  "Register Now"
+                )}
+              </Button>
+              <Button
+                variantColor="teal"
+                variant="outline"
+                onClick={cancellation}
+                px={10}
+              >
+                Cancel
+              </Button>
+            </Stack>
           </form>
         </Box>
       </Box>
