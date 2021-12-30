@@ -11,16 +11,33 @@ import {
   CircularProgress,
 } from "@chakra-ui/core";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Registration() {
   let navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [age, setAge] = useState("");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
+      const res = await axios.post("http://127.0.0.1:5000/api/users/register", {
+        name: name,
+        email: email,
+        password: password,
+        number: number,
+        address: address,
+        age: age,
+      });
+      console.log("Response is:", res);
       setIsLoading(false);
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       setIsLoading(false);
     }
@@ -46,27 +63,48 @@ function Registration() {
           <form onSubmit={handleSubmit}>
             <FormControl isRequired>
               <FormLabel>Full Name</FormLabel>
-              <Input placeholder="Muhammad Anas" />
+              <Input
+                placeholder="Muhammad Anas"
+                onChange={(event) => setName(event.currentTarget.value)}
+              />
             </FormControl>
             <FormControl isRequired mt={6}>
               <FormLabel>Email</FormLabel>
-              <Input type="email" placeholder="test@test.com" />
+              <Input
+                type="email"
+                placeholder="test@test.com"
+                onChange={(event) => setEmail(event.currentTarget.value)}
+              />
             </FormControl>
             <FormControl isRequired mt={6}>
               <FormLabel>Password</FormLabel>
-              <Input type="password" placeholder="*******" />
+              <Input
+                type="password"
+                placeholder="*******"
+                onChange={(event) => setPassword(event.currentTarget.value)}
+              />
             </FormControl>
             <FormControl isRequired mt={6}>
               <FormLabel>Mobile Number</FormLabel>
-              <Input placeholder="03365567718" />
+              <Input
+                placeholder="03365567718"
+                onChange={(event) => setNumber(event.currentTarget.value)}
+              />
             </FormControl>
             <FormControl isRequired mt={6}>
               <FormLabel>Address</FormLabel>
-              <Input placeholder="House.No # 9, Street.No # 14, G-9/1 Islamabad" />
+              <Input
+                placeholder="House.No # 9, Street.No # 14, G-9/1 Islamabad"
+                onChange={(event) => setAddress(event.currentTarget.value)}
+              />
             </FormControl>
             <FormControl isRequired mt={6}>
               <FormLabel>Age</FormLabel>
-              <Input type="password" placeholder="24" />
+              <Input
+                type="password"
+                placeholder="24"
+                onChange={(event) => setAge(event.currentTarget.value)}
+              />
             </FormControl>
 
             {/* <Flex align="center" justifyContent="center">

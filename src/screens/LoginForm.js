@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Box,
@@ -10,21 +10,26 @@ import {
   Stack,
   CircularProgress,
 } from "@chakra-ui/core";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../utils/mockApi";
 import ErrorMessage from "../components/ErrorMessage";
 function LoginForm() {
   const [users, setUsers] = useState([]);
-  const getData = async () => {
-    const res = await axios.get("/api/users");
-    console.log("Response is:", res);
-  };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // const getData = async () => {
+  //   const res = await axios.get("/api/users");
+  //   console.log("Response is:", res.data);
+  // };
+
+  //   const login =()=>{
+  //     axios.post("http://localhost:6969/Login",user)
+  //     .then(res=>{alert(res.data.message)
+  //     setLoginUser(res.data.user)
+  // }
+
   let navigate = useNavigate();
-  const [number, setNumber] = useState("");
+  const [number, setNumber] = useState({});
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const registration = () => {
@@ -35,9 +40,23 @@ function LoginForm() {
     // alert(`Number is: ${number}`);
     setIsLoading(true);
     try {
-      await userLogin({ number });
+      const res = await axios.post("http://127.0.0.1:5000/api/users/login", {
+        number,
+      });
+      console.log("Response is:", res);
+      // console.log("Resoponse is: ", res);
+      if (res.data.message === "login sucess") {
+        console.log("Sucessfull");
+        setNumber("");
+        navigate("/home");
+      } else {
+        console.log("Failed");
+        setError("User is not registered");
+        setNumber("");
+      }
+      // await userLogin({ number });
       setIsLoading(false);
-      navigate("/home");
+      // navigate("/home");
     } catch (error) {
       setError("User is not registered");
       setIsLoading(false);
