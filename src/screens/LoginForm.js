@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Box,
@@ -32,6 +32,13 @@ function LoginForm() {
   const [number, setNumber] = useState({});
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setNumber({});
+    };
+  }, []);
+
   const registration = () => {
     navigate("/registration");
   };
@@ -47,12 +54,15 @@ function LoginForm() {
       // console.log("Resoponse is: ", res);
       if (res.data.message === "login sucess") {
         console.log("Sucessfull");
-        setNumber("");
-        navigate("/home");
+        const { name, address, number } = await res.data.user;
+        navigate("/home", {
+          state: { name: name, address: address, number: number },
+        });
+        setNumber({});
       } else {
         console.log("Failed");
         setError("User is not registered");
-        setNumber("");
+        setNumber({});
       }
       // await userLogin({ number });
       setIsLoading(false);

@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ErrorMessage from "../components/ErrorMessage";
 
 function Registration() {
   let navigate = useNavigate();
@@ -22,6 +23,7 @@ function Registration() {
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
   const [age, setAge] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,8 +38,14 @@ function Registration() {
         age: age,
       });
       console.log("Response is:", res);
-      setIsLoading(false);
-      // navigate("/");
+      if (res.data.message === "successfull") {
+        setIsLoading(false);
+        navigate("/");
+      } else {
+        console.log("Failed");
+        setError("User Already Exists");
+        setIsLoading(false);
+      }
     } catch (error) {
       setIsLoading(false);
     }
@@ -61,6 +69,7 @@ function Registration() {
 
         <Box my={4} px={8} textAlign="left">
           <form onSubmit={handleSubmit}>
+            {error && <ErrorMessage message={error} />}
             <FormControl isRequired>
               <FormLabel>Full Name</FormLabel>
               <Input
@@ -101,7 +110,6 @@ function Registration() {
             <FormControl isRequired mt={6}>
               <FormLabel>Age</FormLabel>
               <Input
-                type="password"
                 placeholder="24"
                 onChange={(event) => setAge(event.currentTarget.value)}
               />
